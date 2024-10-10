@@ -4,9 +4,9 @@ function Structure({ images }) {
   return (
     <div className="main">
       {images.slice(0, 12).map((image, index) => (
-        <div className="card" key={index}>
+        <button className="card" key={index}>
           <img src={image} alt={`Pokemon ${index + 1}`} />
-        </div>
+        </button>
       ))}
     </div>
   );

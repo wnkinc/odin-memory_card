@@ -38,10 +38,18 @@ function App() {
   }, []); // The empty array ensures this runs only once when the component mounts
 
   return (
-    <div>
+    <>
+      <header>
+        <div className="score">
+          <div className="text">Score:</div>5
+        </div>
+        <div className="score">
+          <div className="text">High Score:</div>10
+        </div>
+      </header>
       <h1>Pokémon Card</h1>
       <Structure images={images} /> {/* Pass image as a prop */}
-    </div>
+    </>
   );
 }
 
