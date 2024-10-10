@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import Structure from "./components/structure";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [image, setImage] = useState(""); // Initialize image state
+
+  useEffect(() => {
+    // Fetch Pokémon data and update the image state
+    fetch("https://pokeapi.co/api/v2/pokemon/pikachu")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(`Name: ${data.name}`);
+        console.log(`Height: ${data.height}`);
+        console.log(`Weight: ${data.weight}`);
+        console.log(`Ability: ${data.abilities[0].ability.name}`);
+        setImage(data.sprites.front_default); // Set image in state
+      })
+      .catch((error) => {
+        console.error("Error fetching Pokémon data:", error);
+      });
+  }, []); // The empty array ensures this runs only once when the component mounts
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <h1>Pokémon Card</h1>
+      <Structure image={image} /> {/* Pass image as a prop */}
+    </div>
+  );
 }
 
-export default App
+export default App;
