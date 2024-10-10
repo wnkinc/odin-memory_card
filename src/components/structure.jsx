@@ -1,24 +1,19 @@
 import PropTypes from "prop-types"; // Import PropTypes
 
-function Structure({ image }) {
+function Structure({ images }) {
   return (
-    <>
-      <div className="main">
-        <div className="card">
-          <img src={image} alt="Pokemon" />
+    <div className="main">
+      {images.slice(0, 12).map((image, index) => (
+        <div className="card" key={index}>
+          <img src={image} alt={`Pokemon ${index + 1}`} />
         </div>
-        <div className="card"></div>
-        <div className="card"></div>
-        <div className="card"></div>
-        <div className="card"></div>
-        <div className="card"></div>
-      </div>
-    </>
+      ))}
+    </div>
   );
 }
 
 Structure.propTypes = {
-  image: PropTypes.string.isRequired, // Expect image to be a string and required
+  images: PropTypes.arrayOf(PropTypes.string).isRequired, // Expect images to be an array of strings and required
 };
 
 export default Structure;
