@@ -3,10 +3,10 @@ import Structure from "./components/structure";
 import "./App.css";
 
 function App() {
-  const [images, setImages] = useState([]); // Initialize image state
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
-    const pokemon = [
+    const pokémon = [
       "pikachu",
       "ninetales",
       "mew",
@@ -21,21 +21,21 @@ function App() {
       "rowlet",
     ];
 
-    // Fetch Pokémon data for each Pokémon in the array
-    pokemon.forEach((poke) => {
-      fetch(`https://pokeapi.co/api/v2/pokemon/${poke}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setImages((prevImages) => [
-            ...prevImages, // Spread the previous images
-            data.sprites.front_default, // Add the new image
-          ]);
-        })
-        .catch((error) => {
-          console.error(`Error fetching ${poke} data:`, error);
-        });
-    });
-  }, []); // The empty array ensures this runs only once when the component mounts
+    // Use Promise.all to fetch data for all Pokémon and set images once
+    Promise.all(
+      pokémon.map((poké) =>
+        fetch(`https://pokeapi.co/api/v2/pokemon/${poké}`)
+          .then((response) => response.json())
+          .then((data) => data.sprites.front_default)
+      )
+    )
+      .then((fetchedImages) => {
+        setImages(fetchedImages);
+      })
+      .catch((error) => {
+        console.error("Error fetching Pokémon data:", error);
+      });
+  }, []);
 
   return (
     <>
@@ -48,7 +48,7 @@ function App() {
         </div>
       </header>
       <h1>Pokémon Card</h1>
-      <Structure images={images} /> {/* Pass image as a prop */}
+      <Structure images={images} />
     </>
   );
 }
