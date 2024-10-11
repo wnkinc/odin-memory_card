@@ -5,6 +5,7 @@ import "./App.css";
 function App() {
   const [images, setImages] = useState([]);
   const [clickedCards, setClickedCards] = useState([]); // State to track clicked cards
+  const [highScore, setHighScore] = useState(0); // State for high score
 
   // Fisher-Yates Shuffle function to randomize the array
   const shuffleArray = (array) => {
@@ -53,9 +54,20 @@ function App() {
 
   const handleCardClick = (name) => {
     if (!clickedCards.includes(name)) {
-      setClickedCards((prevClicked) => [...prevClicked, name]); // Add the clicked Pokémon name to the array
+      setClickedCards((prevClicked) => {
+        const newClickedCards = [...prevClicked, name]; // Add the clicked Pokémon name to the array
+        // Check if the new score is higher than the high score
+        if (newClickedCards.length > highScore) {
+          setHighScore(newClickedCards.length); // Update high score
+        }
+        return newClickedCards; // Return the updated array
+      });
+    } else {
+      // Reset clicked cards if the same card is clicked again
+      setClickedCards([]);
     }
-    // You can also implement additional logic here, like handling scores or game mechanics
+    // Shuffle the images array each time a card is clicked
+    shuffleArray(images);
   };
 
   return (
@@ -66,10 +78,15 @@ function App() {
           {clickedCards.length}
         </div>
         <div className="score">
-          <div className="text">High Score:</div>10
+          <div className="text">High Score:</div>
+          {highScore}
         </div>
       </header>
       <h1>Pokémon Memory Card Game</h1>
+      <p>
+        Get points by clicking on an image but don&apos;t click on any more than
+        once!
+      </p>
       <Structure images={images} handleCardClick={handleCardClick} />
     </>
   );

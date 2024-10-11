@@ -31,7 +31,8 @@ header {
   gap: 5px;
 }
 
-h1 {
+h1,
+p {
   text-align: center;
 }
 
